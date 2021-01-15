@@ -1,4 +1,5 @@
-# final-project
-topic to be determined...
+# Baseball Predictive Analysis with Machine Learning
 <br>
-### Team - Germaine Johnson, Jeremy Jones, Nick Orewiler, Reza Abasaltian
+Team Finish Line
+<br>
+### Contributors - Germaine Johnson, Jeremy Jones, Nick Orewiler, Reza Abasaltian

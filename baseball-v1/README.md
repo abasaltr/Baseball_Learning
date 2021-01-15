@@ -1,3 +1,3 @@
-# idea-v1
+# baseball-v1
 
 final project topic idea to be determined...
