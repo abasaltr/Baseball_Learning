@@ -1,8 +1,10 @@
+baseball_db
+
 Teams
 -
 yearID int
-teamID int
-franchID int FK >- Franchises.franchiseID
+teamID PK int
+franchiseID int FK >- Franchises.franchiseID
 G int
 W int
 R int
@@ -49,22 +51,22 @@ R int
 
 Players
 - 
-playerID int
+playerID PK int
 birthYear int
-nameFirst string
-nameLast string
+nameFirst varchar(30)
+nameLast varchar(30)
 debut date
 finalGame date
 
 Franchises
 -
-franchiseID int
-FranchiseName string
+franchiseID PK int
+FranchiseName varchar(30)
 
 Salaries
 - 
 yearID int
-teamID int
+teamID int FK >- Teams.teamID
 playerID int FK >- Players.playerID
 salary money
 
