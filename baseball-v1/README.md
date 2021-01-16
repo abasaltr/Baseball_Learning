@@ -3,7 +3,7 @@
 
 ##  Group Members:  
 
-Finish Liners (Group 3)
+Group 3
 
 Reza, Germaine, Nick, and Jeremy
 

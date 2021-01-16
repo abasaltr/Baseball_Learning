@@ -1,3 +1,0 @@
-# idea-v1
-
-final project topic idea to be determined...
