@@ -1,0 +1,77 @@
+baseball_db
+
+Teams
+-
+yearID int
+teamID PK int
+franchiseID int FK >- Franchises.franchiseID
+G int
+W int
+R int
+H int
+HR int
+BB int
+SO int
+SB int
+RA int
+ERA decimal
+HA int
+HRA int
+BBA int
+SOA int
+
+Batting
+-
+playerID int FK >- Players.playerID
+yearID int
+teamID int FK >- Teams.teamID
+stint int
+G int
+R int
+H int
+HR int
+BB int
+IBB int
+SO int
+SB int
+
+Pitching
+-
+playerID int FK >- Players.playerID
+yearID int
+teamID int FK >- Teams.teamID
+stint int
+G int
+H int
+HR int
+BB int
+SO int
+ERA int
+R int
+
+Players
+- 
+playerID PK int
+birthYear int
+nameFirst varchar(30)
+nameLast varchar(30)
+debut date
+finalGame date
+
+Franchises
+-
+franchiseID PK int
+FranchiseName varchar(30)
+
+Salaries
+- 
+yearID int
+teamID int FK >- Teams.teamID
+playerID int FK >- Players.playerID
+salary money
+
+Tableau
+-
+playerID int FK >- Players.playerID
+teamID int FK >- Teams.teamID
+winPct decimal
