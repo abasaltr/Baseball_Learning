@@ -4,8 +4,8 @@
 
 CREATE TABLE "Teams" (
     "yearID" int   NOT NULL,
-    "teamID" int   NOT NULL,
-    "franchiseID" int   NOT NULL,
+    "teamID" varchar(3)   NOT NULL,
+    "franchiseID" varchar(3)   NOT NULL,
     "G" int   NOT NULL,
     "W" int   NOT NULL,
     "R" int   NOT NULL,
@@ -26,9 +26,9 @@ CREATE TABLE "Teams" (
 );
 
 CREATE TABLE "Batting" (
-    "playerID" int   NOT NULL,
+    "playerID" varchar(30)   NOT NULL,
     "yearID" int   NOT NULL,
-    "teamID" int   NOT NULL,
+    "teamID" varchar(3)   NOT NULL,
     "stint" int   NOT NULL,
     "G" int   NOT NULL,
     "R" int   NOT NULL,
@@ -41,9 +41,9 @@ CREATE TABLE "Batting" (
 );
 
 CREATE TABLE "Pitching" (
-    "playerID" int   NOT NULL,
+    "playerID" varchar(30)   NOT NULL,
     "yearID" int   NOT NULL,
-    "teamID" int   NOT NULL,
+    "teamID" varchar(3)   NOT NULL,
     "stint" int   NOT NULL,
     "G" int   NOT NULL,
     "H" int   NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE "Pitching" (
 );
 
 CREATE TABLE "Players" (
-    "playerID" int   NOT NULL,
+    "playerID" varchar(30)   NOT NULL,
     "birthYear" int   NOT NULL,
     "nameFirst" varchar(30)   NOT NULL,
     "nameLast" varchar(30)   NOT NULL,
@@ -67,8 +67,8 @@ CREATE TABLE "Players" (
 );
 
 CREATE TABLE "Franchises" (
-    "franchiseID" int   NOT NULL,
-    "FranchiseName" varchar(30)   NOT NULL,
+    "franchiseID" varchar(3)   NOT NULL,
+    "FranchiseName" varchar(60)   NOT NULL,
     CONSTRAINT "pk_Franchises" PRIMARY KEY (
         "franchiseID"
      )
@@ -76,14 +76,14 @@ CREATE TABLE "Franchises" (
 
 CREATE TABLE "Salaries" (
     "yearID" int   NOT NULL,
-    "teamID" int   NOT NULL,
-    "playerID" int   NOT NULL,
-    "salary" money   NOT NULL
+    "teamID" varchar(3)   NOT NULL,
+    "playerID" varchar(30)   NOT NULL,
+    "salary" decimal   NOT NULL
 );
 
 CREATE TABLE "Tableau" (
-    "playerID" int   NOT NULL,
-    "teamID" int   NOT NULL,
+    "playerID" varchar(30)   NOT NULL,
+    "teamID" varchar(3)   NOT NULL,
     "winPct" decimal   NOT NULL
 );
 
@@ -100,6 +100,9 @@ ALTER TABLE "Pitching" ADD CONSTRAINT "fk_Pitching_playerID" FOREIGN KEY("player
 REFERENCES "Players" ("playerID");
 
 ALTER TABLE "Pitching" ADD CONSTRAINT "fk_Pitching_teamID" FOREIGN KEY("teamID")
+REFERENCES "Teams" ("teamID");
+
+ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_teamID" FOREIGN KEY("teamID")
 REFERENCES "Teams" ("teamID");
 
 ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_playerID" FOREIGN KEY("playerID")

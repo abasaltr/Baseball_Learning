@@ -3,8 +3,8 @@ baseball_db
 Teams
 -
 yearID int
-teamID PK int
-franchiseID int FK >- Franchises.franchiseID
+teamID PK varchar(3)
+franchiseID varchar(3) FK >- Franchises.franchiseID
 G int
 W int
 R int
@@ -22,9 +22,9 @@ SOA int
 
 Batting
 -
-playerID int FK >- Players.playerID
+playerID varchar(30) FK >- Players.playerID
 yearID int
-teamID int FK >- Teams.teamID
+teamID varchar(3) FK >- Teams.teamID
 stint int
 G int
 R int
@@ -37,9 +37,9 @@ SB int
 
 Pitching
 -
-playerID int FK >- Players.playerID
+playerID varchar(30) FK >- Players.playerID
 yearID int
-teamID int FK >- Teams.teamID
+teamID varchar(3) FK >- Teams.teamID
 stint int
 G int
 H int
@@ -51,7 +51,7 @@ R int
 
 Players
 - 
-playerID PK int
+playerID PK varchar(30)
 birthYear int
 nameFirst varchar(30)
 nameLast varchar(30)
@@ -60,18 +60,18 @@ finalGame date
 
 Franchises
 -
-franchiseID PK int
-FranchiseName varchar(30)
+franchiseID PK varchar(3)
+FranchiseName varchar(60)
 
 Salaries
 - 
 yearID int
-teamID int FK >- Teams.teamID
-playerID int FK >- Players.playerID
-salary money
+teamID varchar(3) FK >- Teams.teamID
+playerID varchar(30) FK >- Players.playerID
+salary decimal
 
 Tableau
 -
-playerID int FK >- Players.playerID
-teamID int FK >- Teams.teamID
+playerID varchar(30) FK >- Players.playerID
+teamID varchar(3) FK >- Teams.teamID
 winPct decimal
