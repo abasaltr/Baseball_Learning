@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 =======
 ##  Baseball Learning
 
