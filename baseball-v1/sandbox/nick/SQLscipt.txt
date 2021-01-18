@@ -1,0 +1,84 @@
+-- Franchise TABLE
+ALTER TABLE public.franchises
+    ALTER COLUMN "franchID" TYPE character varying(4) COLLATE pg_catalog."default";
+
+ALTER TABLE public.franchises
+    ALTER COLUMN "franchName" TYPE character varying(40) COLLATE pg_catalog."default";
+ALTER TABLE public.franchises
+    ADD PRIMARY KEY ("franchID");
+
+--Players TABLE
+ALTER TABLE public.players
+    ALTER COLUMN "playerID" TYPE character varying(40) COLLATE pg_catalog."default";
+
+ALTER TABLE public.players
+    ALTER COLUMN "nameFirst" TYPE character varying(40) COLLATE pg_catalog."default";
+
+ALTER TABLE public.players
+    ALTER COLUMN "nameLast" TYPE character varying(40) COLLATE pg_catalog."default";
+
+ALTER TABLE public.players
+	ALTER COLUMN debut TYPE date  USING ("debut"::text::date);
+
+ALTER TABLE public.players
+	ALTER COLUMN "finalGame" TYPE date  USING ("finalGame"::text::date);
+
+
+ALTER TABLE public.players
+    ADD PRIMARY KEY ("playerID");
+
+
+-- Teams TABLE
+ALTER TABLE public.teams
+    ALTER COLUMN "teamID" TYPE character varying(4) COLLATE pg_catalog."default";
+
+ALTER TABLE public.teams
+    ALTER COLUMN "franchID" TYPE character varying(4) COLLATE pg_catalog."default";
+ALTER TABLE public.teams
+    ADD PRIMARY KEY ("yearID", "teamID");
+ALTER TABLE teams
+	ADD FOREIGN KEY ("franchID") REFERENCES franchises("franchID");
+
+-- Salaries TABLE
+ALTER TABLE public.salaries
+    ALTER COLUMN "playerID" TYPE character varying(40) COLLATE pg_catalog."default";
+
+ALTER TABLE public.salaries
+    ALTER COLUMN "teamID" TYPE character varying(4) COLLATE pg_catalog."default";
+ALTER TABLE public.salaries
+    ADD PRIMARY KEY ("yearID", "playerID", "teamID");
+ALTER TABLE salaries
+	ADD FOREIGN KEY ("yearID", "teamID") REFERENCES teams("yearID", "teamID");
+ALTER TABLE salaries
+	ADD FOREIGN KEY ("playerID") REFERENCES players("playerID");
+
+-- Batting TABLE
+ALTER TABLE public.batting
+    ALTER COLUMN "playerID" TYPE character varying(40) COLLATE pg_catalog."default";
+
+ALTER TABLE public.batting
+    ALTER COLUMN "teamID" TYPE character varying(4) COLLATE pg_catalog."default";
+ALTER TABLE public.batting
+    ADD PRIMARY KEY ("playerID", "yearID", "teamID", stint);
+ALTER TABLE batting
+	ADD FOREIGN KEY ("playerID") REFERENCES players("playerID");
+ALTER TABLE batting
+	ADD FOREIGN KEY ("yearID", "teamID") REFERENCES teams("yearID", "teamID");
+
+-- Pithching TABLE
+ALTER TABLE public.pitching
+    ALTER COLUMN "playerID" TYPE character varying(40) COLLATE pg_catalog."default";
+
+ALTER TABLE public.pitching
+    ALTER COLUMN "teamID" TYPE character varying(4) COLLATE pg_catalog."default";
+ALTER TABLE public.pitching
+    ADD PRIMARY KEY ("playerID", "yearID", "teamID", stint);
+ALTER TABLE pitching
+	ADD FOREIGN KEY ("playerID") REFERENCES players("playerID");
+ALTER TABLE pitching
+	ADD FOREIGN KEY ("yearID", "teamID") REFERENCES teams("yearID", "teamID");
+
+
+
+
+
