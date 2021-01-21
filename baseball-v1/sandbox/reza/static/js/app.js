@@ -26,7 +26,7 @@ function addFranchises(response) {
 function addTeams(response) {
     var teams = response;
     return teams;
-}//end addCensusCrime() function
+}//end addTeams() function
 
 // function addTeamStats
 function addTeamStats(response) {
