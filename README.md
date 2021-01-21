@@ -36,4 +36,4 @@ We will use the SVM model with GridSearchCV in this project.
 * Web Based UI (HTML/CSS/Bootstrap)
 * Tableau
 * Heroku
->>>>>>> 05e4d863e5cd54bd886391b795974ff878209f6b
+
