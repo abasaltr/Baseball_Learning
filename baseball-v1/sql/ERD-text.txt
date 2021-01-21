@@ -1,77 +1,88 @@
 baseball_db
 
-Teams
--
-yearID int
-teamID PK varchar(3)
-franchiseID varchar(3) FK >- Franchises.franchiseID
-G int
-W int
-R int
-H int
-HR int
-BB int
-SO int
-SB int
-RA int
-ERA decimal
-HA int
-HRA int
-BBA int
-SOA int
+"Team-Stats"
+--
+"statID" PK int
+"franchiseID" varchar(3) FK >- "Franchises"."franchiseID"
+"teamID" varchar(8) FK >- Teams.teamID
+"yearID" int
+"G" int
+"W" int
+"R" int
+"H" int
+"HR" int
+"BB" int
+"SO" int
+"SB" int
+"RA" int
+"ERA" decimal
+"HA" int
+"HRA" int
+"BBA" int
+"SOA" int
 
-Batting
--
-playerID varchar(30) FK >- Players.playerID
-yearID int
-teamID varchar(3) FK >- Teams.teamID
-stint int
-G int
-R int
-H int
-HR int
-BB int
-IBB int
-SO int
-SB int
+"Batting"
+--
+"fpID" int FK >- "FranchisePlayers"."fpID"
+"yearID" int
+"stint" int
+"G" int
+"R" int
+"H" int
+"HR" int
+"BB" int
+"IBB" int
+"SO" int
+"SB" int
 
-Pitching
--
-playerID varchar(30) FK >- Players.playerID
-yearID int
-teamID varchar(3) FK >- Teams.teamID
-stint int
-G int
-H int
-HR int
-BB int
-SO int
-ERA int
-R int
+"Pitching"
+--
+"fpID" int FK >- "FranchisePlayers"."fpID"
+"yearID" int
+"stint" int
+"G" int
+"H" int
+"HR" int
+"BB" int
+"SO" int
+"ERA" int
+"R" int
 
-Players
-- 
-playerID PK varchar(30)
-birthYear int
-nameFirst varchar(30)
-nameLast varchar(30)
-debut date
-finalGame date
+"Players"
+--
+"playerID" PK varchar(30)
+"birthYear" int
+"nameFirst" varchar(30)
+"nameLast" varchar(30)
+"debut" date
+"finalGame" date
 
-Franchises
--
-franchiseID PK varchar(3)
-FranchiseName varchar(60)
+"Franchises"
+--
+"franchiseID" PK varchar(3)
+"FranchiseName" varchar(60)
 
-Salaries
-- 
-yearID int
-teamID varchar(3) FK >- Teams.teamID
-playerID varchar(30) FK >- Players.playerID
-salary decimal
+"Salaries"
+--
+"salaryID" int
+"fpID" int FK >- "FranchisePlayers"."fpID"
+"yearID" int
+"salary" decimal
 
-Tableau
--
-playerID varchar(30) FK >- Players.playerID
-teamID varchar(3) FK >- Teams.teamID
-winPct decimal
+"Tableau"
+--
+"vizID" int
+"fpID" int FK >- "FranchisePlayers"."fpID"
+"winPct" decimal
+
+"FranchisePlayers"
+--
+"fpID" int PK
+franchiseID varchar(3) FK >- Franchises.franchiseID 
+teamID varchar(8) FK >- Teams.teamID
+"playerID" varchar(30) FK >- "Players"."playerID"
+
+"Teams"
+--
+"teamID" PK varchar(8)
+"TeamName" varchar(60)

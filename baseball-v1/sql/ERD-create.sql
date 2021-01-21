@@ -1,11 +1,21 @@
 ﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
+DROP TABLE "Batting";
+DROP TABLE "Pitching";
+DROP TABLE "Salaries";
+DROP TABLE "Tableau";
+DROP TABLE "Team-Stats";
+DROP TABLE "FranchisePlayers";
+DROP TABLE "Teams";
+DROP TABLE "Players";
+DROP TABLE "Franchises";
 
-CREATE TABLE "Teams" (
-    "yearID" int   NOT NULL,
-    "teamID" varchar(3)   NOT NULL,
+CREATE TABLE "Team-Stats" (
+    "statID" int   NOT NULL,
     "franchiseID" varchar(3)   NOT NULL,
+    "teamID" varchar(8)   NOT NULL,
+    "yearID" int   NOT NULL,
     "G" int   NOT NULL,
     "W" int   NOT NULL,
     "R" int   NOT NULL,
@@ -20,15 +30,14 @@ CREATE TABLE "Teams" (
     "HRA" int   NOT NULL,
     "BBA" int   NOT NULL,
     "SOA" int   NOT NULL,
-    CONSTRAINT "pk_Teams" PRIMARY KEY (
-        "teamID"
+    CONSTRAINT "pk_Team-Stats" PRIMARY KEY (
+        "statID"
      )
 );
 
 CREATE TABLE "Batting" (
-    "playerID" varchar(30)   NOT NULL,
+    "fpID" int   NOT NULL,
     "yearID" int   NOT NULL,
-    "teamID" varchar(3)   NOT NULL,
     "stint" int   NOT NULL,
     "G" int   NOT NULL,
     "R" int   NOT NULL,
@@ -41,9 +50,8 @@ CREATE TABLE "Batting" (
 );
 
 CREATE TABLE "Pitching" (
-    "playerID" varchar(30)   NOT NULL,
+    "fpID" int   NOT NULL,
     "yearID" int   NOT NULL,
-    "teamID" varchar(3)   NOT NULL,
     "stint" int   NOT NULL,
     "G" int   NOT NULL,
     "H" int   NOT NULL,
@@ -75,42 +83,60 @@ CREATE TABLE "Franchises" (
 );
 
 CREATE TABLE "Salaries" (
+    "salaryID" int   NOT NULL,
+    "fpID" int   NOT NULL,
     "yearID" int   NOT NULL,
-    "teamID" varchar(3)   NOT NULL,
-    "playerID" varchar(30)   NOT NULL,
     "salary" decimal   NOT NULL
 );
 
 CREATE TABLE "Tableau" (
-    "playerID" varchar(30)   NOT NULL,
-    "teamID" varchar(3)   NOT NULL,
+    "vizID" int   NOT NULL,
+    "fpID" int   NOT NULL,
     "winPct" decimal   NOT NULL
 );
 
-ALTER TABLE "Teams" ADD CONSTRAINT "fk_Teams_franchiseID" FOREIGN KEY("franchiseID")
+CREATE TABLE "FranchisePlayers" (
+    "fpID" int   NOT NULL,
+    "franchiseID" varchar(3)   NOT NULL,
+    "teamID" varchar(8)   NOT NULL,
+    "playerID" varchar(30)   NOT NULL,
+    CONSTRAINT "pk_FranchisePlayers" PRIMARY KEY (
+        "fpID"
+     )
+);
+
+CREATE TABLE "Teams" (
+    "teamID" varchar(8)   NOT NULL,
+    "TeamName" varchar(60)   NOT NULL,
+    CONSTRAINT "pk_Teams" PRIMARY KEY (
+        "teamID"
+     )
+);
+
+ALTER TABLE "Team-Stats" ADD CONSTRAINT "fk_Team-Stats_franchiseID" FOREIGN KEY("franchiseID")
 REFERENCES "Franchises" ("franchiseID");
 
-ALTER TABLE "Batting" ADD CONSTRAINT "fk_Batting_playerID" FOREIGN KEY("playerID")
-REFERENCES "Players" ("playerID");
-
-ALTER TABLE "Batting" ADD CONSTRAINT "fk_Batting_teamID" FOREIGN KEY("teamID")
+ALTER TABLE "Team-Stats" ADD CONSTRAINT "fk_Team-Stats_teamID" FOREIGN KEY("teamID")
 REFERENCES "Teams" ("teamID");
 
-ALTER TABLE "Pitching" ADD CONSTRAINT "fk_Pitching_playerID" FOREIGN KEY("playerID")
-REFERENCES "Players" ("playerID");
+ALTER TABLE "Batting" ADD CONSTRAINT "fk_Batting_fpID" FOREIGN KEY("fpID")
+REFERENCES "FranchisePlayers" ("fpID");
 
-ALTER TABLE "Pitching" ADD CONSTRAINT "fk_Pitching_teamID" FOREIGN KEY("teamID")
+ALTER TABLE "Pitching" ADD CONSTRAINT "fk_Pitching_fpID" FOREIGN KEY("fpID")
+REFERENCES "FranchisePlayers" ("fpID");
+
+ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_fpID" FOREIGN KEY("fpID")
+REFERENCES "FranchisePlayers" ("fpID");
+
+ALTER TABLE "Tableau" ADD CONSTRAINT "fk_Tableau_fpID" FOREIGN KEY("fpID")
+REFERENCES "FranchisePlayers" ("fpID");
+
+ALTER TABLE "FranchisePlayers" ADD CONSTRAINT "fk_FranchisePlayers_franchiseID" FOREIGN KEY("franchiseID")
+REFERENCES "Franchises" ("franchiseID");
+
+ALTER TABLE "FranchisePlayers" ADD CONSTRAINT "fk_FranchisePlayers_teamID" FOREIGN KEY("teamID")
 REFERENCES "Teams" ("teamID");
 
-ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_teamID" FOREIGN KEY("teamID")
-REFERENCES "Teams" ("teamID");
-
-ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_playerID" FOREIGN KEY("playerID")
+ALTER TABLE "FranchisePlayers" ADD CONSTRAINT "fk_FranchisePlayers_playerID" FOREIGN KEY("playerID")
 REFERENCES "Players" ("playerID");
-
-ALTER TABLE "Tableau" ADD CONSTRAINT "fk_Tableau_playerID" FOREIGN KEY("playerID")
-REFERENCES "Players" ("playerID");
-
-ALTER TABLE "Tableau" ADD CONSTRAINT "fk_Tableau_teamID" FOREIGN KEY("teamID")
-REFERENCES "Teams" ("teamID");
 
