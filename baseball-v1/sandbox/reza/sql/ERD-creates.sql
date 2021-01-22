@@ -1,15 +1,6 @@
 ﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
-DROP TABLE "Batting";
-DROP TABLE "Pitching";
-DROP TABLE "Salaries";
-DROP TABLE "Tableau";
-DROP TABLE "Team-Stats";
-DROP TABLE "FranchisePlayers";
-DROP TABLE "Teams";
-DROP TABLE "Players";
-DROP TABLE "Franchises";
 
 CREATE TABLE "Team-Stats" (
     "statID" int   NOT NULL,
@@ -86,13 +77,34 @@ CREATE TABLE "Salaries" (
     "salaryID" int   NOT NULL,
     "fpID" int   NOT NULL,
     "yearID" int   NOT NULL,
-    "salary" decimal   NOT NULL
+    "salary" decimal   NOT NULL,
+    CONSTRAINT "pk_Salaries" PRIMARY KEY (
+        "salaryID"
+     )
 );
 
-CREATE TABLE "Tableau" (
-    "vizID" int   NOT NULL,
+CREATE TABLE "PlayerPredictions" (
+    "ID" int   NOT NULL,
     "fpID" int   NOT NULL,
-    "winPct" decimal   NOT NULL
+    "yearID" int   NOT NULL,
+    "actual" decimal   NOT NULL,
+    "model" decimal   NOT NULL,
+    "modelType" varchar(11)   NOT NULL,
+    CONSTRAINT "pk_PlayerPredictions" PRIMARY KEY (
+        "ID"
+     )
+);
+
+CREATE TABLE "TeamPredictions" (
+    "ID" int   NOT NULL,
+    "teamID" varchar(8)   NOT NULL,
+    "yearID" int   NOT NULL,
+    "actual" decimal   NOT NULL,
+    "model" decimal   NOT NULL,
+    "modelType" varchar(11)   NOT NULL,
+    CONSTRAINT "pk_TeamPredictions" PRIMARY KEY (
+        "ID"
+     )
 );
 
 CREATE TABLE "FranchisePlayers" (
@@ -128,8 +140,11 @@ REFERENCES "FranchisePlayers" ("fpID");
 ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_fpID" FOREIGN KEY("fpID")
 REFERENCES "FranchisePlayers" ("fpID");
 
-ALTER TABLE "Tableau" ADD CONSTRAINT "fk_Tableau_fpID" FOREIGN KEY("fpID")
+ALTER TABLE "PlayerPredictions" ADD CONSTRAINT "fk_PlayerPredictions_fpID" FOREIGN KEY("fpID")
 REFERENCES "FranchisePlayers" ("fpID");
+
+ALTER TABLE "TeamPredictions" ADD CONSTRAINT "fk_TeamPredictions_teamID" FOREIGN KEY("teamID")
+REFERENCES "Teams" ("teamID");
 
 ALTER TABLE "FranchisePlayers" ADD CONSTRAINT "fk_FranchisePlayers_franchiseID" FOREIGN KEY("franchiseID")
 REFERENCES "Franchises" ("franchiseID");

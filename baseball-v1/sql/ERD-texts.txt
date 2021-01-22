@@ -4,7 +4,7 @@ baseball_db
 --
 "statID" PK int
 "franchiseID" varchar(3) FK >- "Franchises"."franchiseID"
-"teamID" varchar(8) FK >- Teams.teamID
+"teamID" varchar(8) FK >- "Teams"."teamID"
 "yearID" int
 "G" int
 "W" int
@@ -64,22 +64,34 @@ baseball_db
 
 "Salaries"
 --
-"salaryID" int
+"salaryID" PK int
 "fpID" int FK >- "FranchisePlayers"."fpID"
 "yearID" int
 "salary" decimal
 
-"Tableau"
+"PlayerPredictions"
 --
-"vizID" int
+"ID" PK int
 "fpID" int FK >- "FranchisePlayers"."fpID"
-"winPct" decimal
+"yearID" int
+"actual" decimal
+"model" decimal
+"modelType" varchar(11)
+
+"TeamPredictions"
+--
+"ID" PK int
+"teamID" varchar(8) FK >- "Teams"."teamID"
+"yearID" int
+"actual" decimal
+"model" decimal
+"modelType" varchar(11)
 
 "FranchisePlayers"
 --
-"fpID" int PK
-franchiseID varchar(3) FK >- Franchises.franchiseID 
-teamID varchar(8) FK >- Teams.teamID
+"fpID" PK int
+"franchiseID" varchar(3) FK >- "Franchises"."franchiseID"
+"teamID" varchar(8) FK >- "Teams"."teamID"
 "playerID" varchar(30) FK >- "Players"."playerID"
 
 "Teams"

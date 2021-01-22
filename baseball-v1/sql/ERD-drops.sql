@@ -1,0 +1,10 @@
+DROP TABLE "Batting";
+DROP TABLE "Pitching";
+DROP TABLE "Salaries";
+DROP TABLE "PlayerPredictions";
+DROP TABLE "FranchisePlayers";
+DROP TABLE "Players";
+DROP TABLE "TeamPredictions";
+DROP TABLE "Team-Stats";
+DROP TABLE "Franchises";
+DROP TABLE "Teams";
