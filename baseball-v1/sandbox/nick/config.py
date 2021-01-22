@@ -1,1 +1,1 @@
-pgPassword = 'geopostg'
+pgPassword = 'NextStory86%40'
