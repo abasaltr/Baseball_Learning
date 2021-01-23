@@ -52,26 +52,37 @@ function addTeamPredicts(response) {
 // function init
 function init(data) {
   // initialize the data for the elements
-  franchisesIn = addFranchises(data[0]);
-  teamsIn = addTeams(data[1]);
-  team_statsIn = addTeamStats(data[2]);
-  team_predictsIn = addTeamPredicts(data[3]);
+  //   franchisesIn = addFranchises(data[0]);
+  //   teamsIn = addTeams(data[1]);
+  //   team_statsIn = addTeamStats(data[2]);
+  //   team_predictsIn = addTeamPredicts(data[3]);
+  //   buildPlot(team_predictsIn);
 
-  buildPlot(team_predictsIn);
+  buildPlot(data[3][0], "ATL");
 } //end init() function
 
 // function buildPlot
-function buildPlot(predictData) {
-  for (i = 0; i < predictData[0]["actual"].length; i++) {
-    //console.log(predictData[0]["actual"][i]);
-    console.log("hello");
-  }
+function buildPlot(predictData, teamId) {
+  console.log(predictData);
 
+  predictData.actual = predictData.actual.map((data) => {
+    return data * 100;
+  });
+
+  predictData.model = predictData.model.map((data) => {
+    return data * 100;
+  });
+
+  predictData.team_id = predictData.team_id.map((data) => {
+    return data.split("-")[0];
+  });
+
+  console.log(predictData);
   var trace1 = {
     x: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019],
     y: ["actual%*100"],
     name: "Actual",
-    marker: { color: rgb(247, 175, 7) },
+    marker: { color: "rgb(247, 175, 7)" },
     type: "bar",
   };
 
@@ -79,7 +90,7 @@ function buildPlot(predictData) {
     x: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019],
     y: ["model%*100"],
     name: "Model",
-    marker: { color: rgb(247, 240, 7) },
+    marker: { color: "rgb(247, 240, 7)" },
     type: "bar",
   };
 
@@ -114,8 +125,6 @@ function buildPlot(predictData) {
     bargap: 0.15,
     bargroupgap: 0.1,
   };
-
-  Plotly.newPlot("myDiv", data, layout);
 
   var data = [trace1, trace2];
   var layout = { barmode: "group" };
