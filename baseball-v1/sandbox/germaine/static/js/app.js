@@ -61,10 +61,7 @@ function init(data) {
   buildPlot(data[3][0], "ATL");
 } //end init() function
 
-// function buildPlot
 function buildPlot(predictData, teamId) {
-  console.log(predictData);
-
   predictData.actual = predictData.actual.map((data) => {
     return data * 100;
   });
@@ -76,6 +73,12 @@ function buildPlot(predictData, teamId) {
   predictData.team_id = predictData.team_id.map((data) => {
     return data.split("-")[0];
   });
+  buildBarPlot(predictData, teamId);
+  buildLinePlot(predictData, teamId);
+}
+
+function buildBarPlot(predictData, teamId) {
+  console.log(predictData);
 
   var actualvalues = predictData.actual.filter((data, index) => {
     return (
@@ -151,39 +154,59 @@ function buildPlot(predictData, teamId) {
   Plotly.newPlot("teamPredict1", data, layout);
 } //end buildPlot function
 
-// function buildPlot - Line Chart
-function buildPlot(predictData, teamId) {
+function buildLinePlot(predictData, teamId) {
   console.log(predictData);
+  var years = predictData.year_id.filter((data, index) => {
+    return (
+      predictData.team_id[index] === teamId &&
+      predictData.year_id[index] >= 2010
+    );
+  });
 
-  trace1 = {
+  var actualvalues = predictData.actual.filter((data, index) => {
+    return (
+      predictData.team_id[index] === teamId &&
+      predictData.year_id[index] >= 2010
+    );
+  });
+
+  var modelvalues = predictData.model.filter((data, index) => {
+    return (
+      predictData.team_id[index] === teamId &&
+      predictData.year_id[index] >= 2010
+    );
+  });
+
+  var actualValuesMinusModelValues = actualvalues.map((data, index) => {
+    return Math.abs(data - modelvalues[index]);
+  });
+
+  var trace1 = {
     type: "scatter",
     x: years,
-    y: actualvalues,
+    y: actualValuesMinusModelValues,
     mode: "lines",
-    name: "Actual",
+    name: "DeltaActual",
     line: {
       color: "rgb(247, 175, 7)",
       width: 3,
     },
   };
 
-  trace2 = {
-    type: "scatter",
-    x: years,
-    y: modelvalues,
-    mode: "lines",
-    name: "Model",
-    line: {
-      color: "rgb(247, 240, 7)",
-      width: 1,
-    },
-  };
-
-  var data = [trace1, trace2];
+  var data = [trace1];
 
   var layout = {
-    width: 500,
-    height: 500,
+    title:
+      "Delta Change in Baseball Predictions Actual Values and Modeled Values",
+    xaxis: {
+      title: "Year",
+      showgrid: false,
+      zeroline: false,
+    },
+    yaxis: {
+      title: "Delta Change in Baseball Predictions",
+      showline: false,
+    },
   };
 
   Plotly.newPlot("teamPredict2", data, layout);
