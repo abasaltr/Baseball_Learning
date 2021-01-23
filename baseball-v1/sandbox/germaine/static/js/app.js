@@ -196,15 +196,14 @@ function buildLinePlot(predictData, teamId) {
   var data = [trace1];
 
   var layout = {
-    title:
-      "Delta Change in Baseball Predictions Actual Values and Modeled Values",
+    title: "Accuracy in Baseball Team Predictions",
     xaxis: {
       title: "Year",
       showgrid: false,
       zeroline: false,
     },
     yaxis: {
-      title: "Delta Change in Baseball Predictions",
+      title: "Differences in Actual and Model Predictions",
       showline: false,
     },
   };
