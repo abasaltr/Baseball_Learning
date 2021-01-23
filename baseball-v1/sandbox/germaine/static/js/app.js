@@ -77,18 +77,39 @@ function buildPlot(predictData, teamId) {
     return data.split("-")[0];
   });
 
+  var actualvalues = predictData.actual.filter((data, index) => {
+    return (
+      predictData.team_id[index] === teamId &&
+      predictData.year_id[index] >= 2010
+    );
+  });
+
+  var modelvalues = predictData.model.filter((data, index) => {
+    return (
+      predictData.team_id[index] === teamId &&
+      predictData.year_id[index] >= 2010
+    );
+  });
+
+  var years = predictData.year_id.filter((data, index) => {
+    return (
+      predictData.team_id[index] === teamId &&
+      predictData.year_id[index] >= 2010
+    );
+  });
+
   console.log(predictData);
   var trace1 = {
-    x: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019],
-    y: ["actual%*100"],
+    x: years,
+    y: actualvalues,
     name: "Actual",
     marker: { color: "rgb(247, 175, 7)" },
     type: "bar",
   };
 
   var trace2 = {
-    x: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019],
-    y: ["model%*100"],
+    x: years,
+    y: modelvalues,
     name: "Model",
     marker: { color: "rgb(247, 240, 7)" },
     type: "bar",
@@ -99,35 +120,33 @@ function buildPlot(predictData, teamId) {
   var layout = {
     title: "Baseball Team Predictions",
     xaxis: {
+      title: "Year",
       tickfont: {
         size: 14,
         color: "rgb(107, 107, 107)",
       },
-      yaxis: {
-        title: "Win Percentage",
-        titlefont: {
-          size: 16,
-          color: "rgb(107, 107, 107)",
-        },
-        tickfont: {
-          size: 14,
-          color: "rgb(107, 107, 107)",
-        },
+    },
+    yaxis: {
+      title: "Win Percentage",
+      titlefont: {
+        size: 16,
+        color: "rgb(107, 107, 107)",
       },
-      legend: {
-        x: 0,
-        y: 1.0,
-        bgcolor: "rgba(255, 255, 255, 0)",
-        bordercolor: "rgba(255, 255, 255, 0)",
+      tickfont: {
+        size: 14,
+        color: "rgb(107, 107, 107)",
       },
+    },
+    legend: {
+      x: 0,
+      y: 1.0,
+      bgcolor: "rgba(255, 255, 255, 0)",
+      bordercolor: "rgba(255, 255, 255, 0)",
     },
     barmode: "group",
     bargap: 0.15,
     bargroupgap: 0.1,
   };
-
-  var data = [trace1, trace2];
-  var layout = { barmode: "group" };
 
   Plotly.newPlot("teamPredict1", data, layout);
 } //end buildPlot function
