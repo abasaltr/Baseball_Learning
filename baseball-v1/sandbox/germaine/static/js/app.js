@@ -68,22 +68,52 @@ function buildPlot(predictData) {
   }
 
   var trace1 = {
-    x: ["year"],
+    x: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019],
     y: ["actual%*100"],
     name: "Actual",
+    marker: { color: rgb(247, 175, 7) },
     type: "bar",
   };
 
   var trace2 = {
-    x: ["year"],
-    y: ["modal%*100"],
+    x: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019],
+    y: ["model%*100"],
     name: "Model",
+    marker: { color: rgb(247, 240, 7) },
     type: "bar",
   };
 
   var data = [trace1, trace2];
 
-  var layout = { barmode: "group" };
+  var layout = {
+    title: "Baseball Team Predictions",
+    xaxis: {
+      tickfont: {
+        size: 14,
+        color: "rgb(107, 107, 107)",
+      },
+      yaxis: {
+        title: "Win Percentage",
+        titlefont: {
+          size: 16,
+          color: "rgb(107, 107, 107)",
+        },
+        tickfont: {
+          size: 14,
+          color: "rgb(107, 107, 107)",
+        },
+      },
+      legend: {
+        x: 0,
+        y: 1.0,
+        bgcolor: "rgba(255, 255, 255, 0)",
+        bordercolor: "rgba(255, 255, 255, 0)",
+      },
+    },
+    barmode: "group",
+    bargap: 0.15,
+    bargroupgap: 0.1,
+  };
 
   Plotly.newPlot("myDiv", data, layout);
 
