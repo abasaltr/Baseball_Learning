@@ -122,7 +122,7 @@ function buildPlot(predictData, teamId) {
     xaxis: {
       title: "Year",
       tickfont: {
-        size: 14,
+        size: 18,
         color: "rgb(107, 107, 107)",
       },
     },
@@ -150,3 +150,41 @@ function buildPlot(predictData, teamId) {
 
   Plotly.newPlot("teamPredict1", data, layout);
 } //end buildPlot function
+
+// function buildPlot - Line Chart
+function buildPlot(predictData, teamId) {
+  console.log(predictData);
+
+  trace1 = {
+    type: "scatter",
+    x: years,
+    y: actualvalues,
+    mode: "lines",
+    name: "Actual",
+    line: {
+      color: "rgb(247, 175, 7)",
+      width: 3,
+    },
+  };
+
+  trace2 = {
+    type: "scatter",
+    x: years,
+    y: modelvalues,
+    mode: "lines",
+    name: "Model",
+    line: {
+      color: "rgb(247, 240, 7)",
+      width: 1,
+    },
+  };
+
+  var data = [trace1, trace2];
+
+  var layout = {
+    width: 500,
+    height: 500,
+  };
+
+  Plotly.newPlot("teamPredict2", data, layout);
+} //end buildLinePlot function
