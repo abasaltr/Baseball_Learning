@@ -1,0 +1,3 @@
+password = 'geopostg'
+
+user = 'postgres'
