@@ -1,7 +1,6 @@
 ﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
-
 CREATE TABLE "Team-Stats" (
     "statID" int   NOT NULL,
     "franchiseID" varchar(3)   NOT NULL,
@@ -83,14 +82,14 @@ CREATE TABLE "Salaries" (
      )
 );
 
-CREATE TABLE "PlayerPredictions" (
+CREATE TABLE "PlayerPredictions-Walks" (
     "ID" int   NOT NULL,
     "fpID" int   NOT NULL,
     "yearID" int   NOT NULL,
     "actual" decimal   NOT NULL,
     "model" decimal   NOT NULL,
     "modelType" varchar(11)   NOT NULL,
-    CONSTRAINT "pk_PlayerPredictions" PRIMARY KEY (
+    CONSTRAINT "pk_PlayerPredictions-Walks" PRIMARY KEY (
         "ID"
      )
 );
@@ -125,6 +124,42 @@ CREATE TABLE "Teams" (
      )
 );
 
+CREATE TABLE "PlayerPredictions-BaseHits" (
+    "ID" int   NOT NULL,
+    "fpID" int   NOT NULL,
+    "yearID" int   NOT NULL,
+    "actual" decimal   NOT NULL,
+    "model" decimal   NOT NULL,
+    "modelType" varchar(11)   NOT NULL,
+    CONSTRAINT "pk_PlayerPredictions-BaseHits" PRIMARY KEY (
+        "ID"
+     )
+);
+
+CREATE TABLE "PlayerPredictions-RunsScore" (
+    "ID" int   NOT NULL,
+    "fpID" int   NOT NULL,
+    "yearID" int   NOT NULL,
+    "actual" decimal   NOT NULL,
+    "model" decimal   NOT NULL,
+    "modelType" varchar(11)   NOT NULL,
+    CONSTRAINT "pk_PlayerPredictions-RunsScore" PRIMARY KEY (
+        "ID"
+     )
+);
+
+CREATE TABLE "PlayerPredictions-HomeRuns" (
+    "ID" int   NOT NULL,
+    "fpID" int   NOT NULL,
+    "yearID" int   NOT NULL,
+    "actual" decimal   NOT NULL,
+    "model" decimal   NOT NULL,
+    "modelType" varchar(11)   NOT NULL,
+    CONSTRAINT "pk_PlayerPredictions-HomeRuns" PRIMARY KEY (
+        "ID"
+     )
+);
+
 ALTER TABLE "Team-Stats" ADD CONSTRAINT "fk_Team-Stats_franchiseID" FOREIGN KEY("franchiseID")
 REFERENCES "Franchises" ("franchiseID");
 
@@ -140,7 +175,7 @@ REFERENCES "FranchisePlayers" ("fpID");
 ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_fpID" FOREIGN KEY("fpID")
 REFERENCES "FranchisePlayers" ("fpID");
 
-ALTER TABLE "PlayerPredictions" ADD CONSTRAINT "fk_PlayerPredictions_fpID" FOREIGN KEY("fpID")
+ALTER TABLE "PlayerPredictions-Walks" ADD CONSTRAINT "fk_PlayerPredictions-Walks_fpID" FOREIGN KEY("fpID")
 REFERENCES "FranchisePlayers" ("fpID");
 
 ALTER TABLE "TeamPredictions" ADD CONSTRAINT "fk_TeamPredictions_teamID" FOREIGN KEY("teamID")
@@ -154,4 +189,13 @@ REFERENCES "Teams" ("teamID");
 
 ALTER TABLE "FranchisePlayers" ADD CONSTRAINT "fk_FranchisePlayers_playerID" FOREIGN KEY("playerID")
 REFERENCES "Players" ("playerID");
+
+ALTER TABLE "PlayerPredictions-BaseHits" ADD CONSTRAINT "fk_PlayerPredictions-BaseHits_fpID" FOREIGN KEY("fpID")
+REFERENCES "FranchisePlayers" ("fpID");
+
+ALTER TABLE "PlayerPredictions-RunsScore" ADD CONSTRAINT "fk_PlayerPredictions-RunsScore_fpID" FOREIGN KEY("fpID")
+REFERENCES "FranchisePlayers" ("fpID");
+
+ALTER TABLE "PlayerPredictions-HomeRuns" ADD CONSTRAINT "fk_PlayerPredictions-HomeRuns_fpID" FOREIGN KEY("fpID")
+REFERENCES "FranchisePlayers" ("fpID");
 

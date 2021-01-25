@@ -69,7 +69,7 @@ baseball_db
 "yearID" int
 "salary" decimal
 
-"PlayerPredictions"
+"PlayerPredictions-Walks"
 --
 "ID" PK int
 "fpID" int FK >- "FranchisePlayers"."fpID"
@@ -98,3 +98,30 @@ baseball_db
 --
 "teamID" PK varchar(8)
 "TeamName" varchar(60)
+
+"PlayerPredictions-BaseHits"
+--
+"ID" PK int
+"fpID" int FK >- "FranchisePlayers"."fpID"
+"yearID" int
+"actual" decimal
+"model" decimal
+"modelType" varchar(11)
+
+"PlayerPredictions-RunsScore"
+--
+"ID" PK int
+"fpID" int FK >- "FranchisePlayers"."fpID"
+"yearID" int
+"actual" decimal
+"model" decimal
+"modelType" varchar(11)
+
+"PlayerPredictions-HomeRuns"
+--
+"ID" PK int
+"fpID" int FK >- "FranchisePlayers"."fpID"
+"yearID" int
+"actual" decimal
+"model" decimal
+"modelType" varchar(11)

@@ -37,8 +37,20 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#teams">Teams</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#players">Players</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Data
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="ERD.html">ERD Diagram</a>
+                            <a class="dropdown-item" href="Data Source.html">Data Source</a>
+                            <!--<a class="dropdown-item" href="Flow Diagram.html">Flow Diagram</a>-->
+
+                        </div>
+                    </li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#dashboard">Dashboard</a></li>
-                    <!--<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#flowdiagram">Diagram</a></li>-->
+
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#thegroup">The Group</a></li>
 
                 </ul>
@@ -79,12 +91,12 @@
                     </span>
                     <h4 class="my-3">Analysis</h4>
                     <p class="text-muted">As a group, we decided to analysis team data and player data from the last
-                        forty years. We chose to use two different modeling techniques and compare the modeling
+                        forty years. We chose to use four different modeling techniques and compare the modeling
                         outcomes. The idea was to take the historical data and predict team wins and future player
                         statistics for the next couple of years. The idea being that, player statistics are directly
-                        related to a teams Win Percentage. We ran both a Regression Model and a Logistical Regression
-                        Model and then compared the results to previous years. In the visuals below you will see the
-                        corelation between the models.</p>
+                        related to a teams Win Percentage. We ran a Linear Model, Lasso Model, Elastic Model, and a
+                        Ridge Model and then compared the results to previous years. In the visuals below you will see
+                        the corelation between the models.</p>
                 </div>
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
