@@ -1,1 +1,9 @@
 last update 2021-01-24 16:19:15.482256-06
+
+TeamPredictions
+
+PlayerPredictions-
+	Walks(BB)
+	Base Hits(H)
+	Runs Score(R)
+	Home Runs(HR)
