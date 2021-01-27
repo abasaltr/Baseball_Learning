@@ -10291,3 +10291,20 @@ section#contact form#contactForm :-ms-input-placeholder {
   width:100px;
   height:100px;
 }
+
+.panel {
+  background-color: #EBEBEB;
+  padding-left: 20px;
+}
+
+h5 {
+  color: #eead0e;
+  font-weight: bold;
+  text-decoration: underline; 
+}
+
+h7 {
+  color: #eead0e;
+  font-weight: bold;
+  line-height: 30px;
+}
