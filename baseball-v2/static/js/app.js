@@ -15,6 +15,9 @@ var teamPredictionsIn = [];
 
 // PlayerPredictionIn per attribute
 var PPI = [];
+var PPYRS = [];
+var PPMTS = [];
+var PPID = [];
 
 // Fetch the JSON data and call function init()
 var url_franchises = "/api/franchises";
@@ -28,16 +31,20 @@ var url_batting = "/api/batting-stats";
 
 var url_team_predict = "/api/team-predictions";
 
-var url_player_predict = "/api/player-predictions";
+var upp = "/api/player-predictions/660799435";
+var upp_yrs = "/api/player-predictions-years";
+var upp_mts = "/api/player-predictions-models";
+var upp_id = "/api/player-predictions-id";
+
 
 var urls = [url_teams, url_team_predict, url_fp, url_players, 
-        url_player_predict,
+        upp, upp_yrs, upp_mts, upp_id, 
         url_salaries]
 
 var promises = [];
 urls.forEach(function (url) { promises.push(d3.json(url)) });
 console.log(promises);
-Promise.all(promises).then(data => init(data));
+var promise = Promise.all(promises).then(data => init(data));
 // end JSON Fetch
 
 ///////////////////////////////////////////////////////////////
@@ -104,9 +111,27 @@ function addTeamPredict(response) {
 // function addPlayerPredictHR
 function addPlayerPredict(response) {
     var playerPredict = response;
-    initDropListPlayer(playerPredict[0]);
     return playerPredict
 }//end addPlayerPredict() function
+
+// function addPlayerPredictHR
+function addPlayerPredictYRS(response) {
+    var playerPredictYRS = response;
+    return playerPredictYRS
+}//end addPlayerPredictYRS() function
+
+// function addPlayerPredictHR
+function addPlayerPredictMTS(response) {
+    var playerPredictMTS = response;
+    return playerPredictMTS
+}//end addPlayerPredictMTS() function
+
+// function addPlayerPredictHR
+function addPlayerPredictID(response) {
+    var playerPredictID = response;
+    initDropListPlayer(playerPredictID[0],PPYRS[0], PPMTS[0]);
+    return playerPredictID
+}//end addPlayerPredictID() function
 
 // function init
 function init(data) {
@@ -118,8 +143,11 @@ function init(data) {
     playersIn = addPlayers(data[3]);
 
     PPI = addPlayerPredict(data[4]);
-    
-    salariesIn = addSalaries(data[5]);
+    PPYRS = addPlayerPredictYRS(data[5]);
+    PPMTS = addPlayerPredictMTS(data[6]); 
+    PPID = addPlayerPredictID(data[7]); 
+
+    salariesIn = addSalaries(data[8]);
 
     //franchisesIn = addFranchises(data[0]);
     //teamStatsIn = addTeamStats(data[0]);
@@ -166,32 +194,33 @@ function initDropListTeam(data) {
 }//initDropList() function
 
 // initDropListPlayer function
-function initDropListPlayer(data) {
+function initDropListPlayer(data,yrs,mts) {
 
-    var fp_id = [...new Set(Object.values(data['fp_id']))];
+    //var fp_id = [...new Set(Object.values(data['fp_id']))];
 
-    var player_id = [];
+    //var player_id = [];
     //fp_id.length
-    for (var i = 0; i < fp_id.length; i++) {
-        player_id.push(getPlayerId(fp_id[i])[0]);
-    }
+    //for (var i = 0; i < fp_id.length; i++) {
+    //    player_id.push(getPlayerId(fp_id[i])[0]);
+    //}
     
-    var pid_uni = player_id.filter((e, i, a) => a.indexOf(e) === i).sort();
+    //var pid_uni = player_id.filter((e, i, a) => a.indexOf(e) === i).sort();
+    var pid_uni = [...new Set(Object.values(data['player_id']))];
     
     var player_name = [];
     for (var i = 0; i < pid_uni.length; i++) {
         player_name.push(getPlayerName(pid_uni[i]));
     }
 
-    var years = [...new Set(Object.values(data['year_id']))];
-
+    var years = [...new Set(Object.values(yrs['year_id']))];
+   
     var decades = [];
     for (var i = 0; i < years.length; i++) {
         var decade = parseInt(Math.floor(years[i] / 10) * 10);
         decades.push(decade);
     }
 
-    var model = [...new Set(Object.values(data['modelType']))];
+    var model = [...new Set(Object.values(mts['model_type']))];
 
     // call function to populate the form dropdown menu options for each filter criteria in alphabetical order
     createDropList(player_name, "selPlayer", "Select Player", 2);
@@ -419,7 +448,7 @@ function getActual_ATB(predictData, fpId, decade, modelType, ATB, plot){
         switch(ATB){
             case "HR":
                 predictData.actual_hr = predictData.actual_hr.map((data) => {
-                    return data * 100;
+                    return data * 1;
                 });
                 var actualvalues = predictData.actual_hr.filter((data, index) => {
                     return (
@@ -438,7 +467,7 @@ function getActual_ATB(predictData, fpId, decade, modelType, ATB, plot){
                 break;
             case "R":
                 predictData.actual_r = predictData.actual_r.map((data) => {
-                    return data * 100;
+                    return data * 1;
                 });
                 var actualvalues = predictData.actual_r.filter((data, index) => {
                     return (
@@ -457,7 +486,7 @@ function getActual_ATB(predictData, fpId, decade, modelType, ATB, plot){
                 break;
             case "H":
                 predictData.actual_h = predictData.actual_h.map((data) => {
-                    return data * 100;
+                    return data * 1;
                 });
                 var actualvalues = predictData.actual_h.filter((data, index) => {
                     return (
@@ -476,7 +505,7 @@ function getActual_ATB(predictData, fpId, decade, modelType, ATB, plot){
                 break;
             case "BB":
                 predictData.actual_bb = predictData.actual_bb.map((data) => {
-                    return data * 100;
+                    return data * 1;
                 });
                 var actualvalues = predictData.actual_bb.filter((data, index) => {
                     return (
@@ -499,7 +528,7 @@ function getActual_ATB(predictData, fpId, decade, modelType, ATB, plot){
         switch(ATB){
         case "HR":
             predictData.actual_hr = predictData.actual_hr.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var actualvalues = predictData.actual_hr.filter((data, index) => {
                 return (
@@ -520,7 +549,7 @@ function getActual_ATB(predictData, fpId, decade, modelType, ATB, plot){
             break;
         case "R":
             predictData.actual_r = predictData.actual_r.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var actualvalues = predictData.actual_r.filter((data, index) => {
                 return (
@@ -541,7 +570,7 @@ function getActual_ATB(predictData, fpId, decade, modelType, ATB, plot){
             break;
         case "H":
             predictData.actual_h = predictData.actual_h.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var actualvalues = predictData.actual_h.filter((data, index) => {
                 return (
@@ -562,7 +591,7 @@ function getActual_ATB(predictData, fpId, decade, modelType, ATB, plot){
             break;
         case "BB":
             predictData.actual_bb = predictData.actual_bb.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var actualvalues = predictData.actual_bb.filter((data, index) => {
                 return (
@@ -592,7 +621,7 @@ function getModel_ATB(predictData, fpId, decade, modelType, ATB, plot){
         switch(ATB){
         case "HR":
             predictData.model_hr = predictData.model_hr.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var modelvalues = predictData.model_hr.filter((data, index) => {
                 return (
@@ -604,7 +633,7 @@ function getModel_ATB(predictData, fpId, decade, modelType, ATB, plot){
             break;
         case "R":
             predictData.model_r = predictData.model_r.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var modelvalues = predictData.model_r.filter((data, index) => {
                 return (
@@ -616,7 +645,7 @@ function getModel_ATB(predictData, fpId, decade, modelType, ATB, plot){
             break;
         case "H":
             predictData.model_h = predictData.model_h.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var modelvalues = predictData.model_h.filter((data, index) => {
                 return (
@@ -628,7 +657,7 @@ function getModel_ATB(predictData, fpId, decade, modelType, ATB, plot){
             break;
         case "BB":
             predictData.model_bb = predictData.model_bb.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var modelvalues = predictData.model_bb.filter((data, index) => {
                 return (
@@ -644,7 +673,7 @@ function getModel_ATB(predictData, fpId, decade, modelType, ATB, plot){
         switch(ATB){
         case "HR":
             predictData.model_hr = predictData.model_hr.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var modelvalues = predictData.model_hr.filter((data, index) => {
                 return (
@@ -657,7 +686,7 @@ function getModel_ATB(predictData, fpId, decade, modelType, ATB, plot){
             break;
         case "R":
             predictData.model_r = predictData.model_r.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var modelvalues = predictData.model_r.filter((data, index) => {
                 return (
@@ -670,7 +699,7 @@ function getModel_ATB(predictData, fpId, decade, modelType, ATB, plot){
             break;
         case "H":
             predictData.model_h = predictData.model_h.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var modelvalues = predictData.model_h.filter((data, index) => {
                 return (
@@ -683,7 +712,7 @@ function getModel_ATB(predictData, fpId, decade, modelType, ATB, plot){
             break;
         case "BB":
             predictData.model_bb = predictData.model_bb.map((data) => {
-                return data * 100;
+                return data * 1;
             });
             var modelvalues = predictData.model_bb.filter((data, index) => {
                 return (
@@ -724,11 +753,9 @@ function changeTeam(team_name) {
 
 } // end changeTeamName()
 
-// from html 
-function changePlayer(player_name) {
-    removePlots("player");
-    var player_id = getPlayerId1(player_name);
-    var fp_id = parseInt(getFranchiseId(player_id));
+// function initPlayer called from changePlayer()
+function initPlayer(data){
+    PPI = addPlayerPredict(data[0]);
 
     if (d3.select('#selModel-P option:checked').text() == "Select Model")
         mt = "ML-LN-T1"
@@ -745,6 +772,8 @@ function changePlayer(player_name) {
     else
         atb = d3.select('#selATB option:checked').property("value")        
 
+    fp_id = PPI[0].fp_id[0];
+
     console.log("change player name...", fp_id, mt, dec, atb);
 
     displayDemo_Player(fp_id);
@@ -754,6 +783,22 @@ function changePlayer(player_name) {
     buildHeatPlot_Player(PPI[0], fp_id, dec, mt, atb);
      
     console.log("---completed---");
+
+} //end initPlayer()
+
+// from html 
+function changePlayer(player_name) {
+    removePlots("player");
+    var player_id = getPlayerId1(player_name);
+    var fp_id = parseInt(getFranchiseId(player_id));
+
+    upp = "/api/player-predictions/" + fp_id
+    urls = [upp]
+
+    promises = [];    
+    urls.forEach(function (url) { promises.push(d3.json(url)) });
+    console.log(promises);
+    promise = Promise.all(promises).then(data => initPlayer(data));
 
 } // end changePlayer()
 

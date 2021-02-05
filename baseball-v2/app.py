@@ -15,7 +15,7 @@ from flask import (
 from flask_sqlalchemy import SQLAlchemy
 
 # Postgres database user and password import
-from db_key import user, password
+from db_key import key
 
 #################################################
 # Flask Setup
@@ -25,11 +25,7 @@ app = Flask(__name__)
 #################################################
 # Database Setup
 #################################################
-try:
-    db_uri = os.environ['DATABASE_URL']
-except KeyError:
-    db_uri = f'postgres://{user}:{password}@localhost:5432/baseball_db_lte'
-app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+app.config['SQLALCHEMY_DATABASE_URI'] = key
 db = SQLAlchemy(app)
 
 #################################################
@@ -379,8 +375,9 @@ def players():
 # end players() route
 
 # create route that renders player predictions on JSON data
-@app.route("/api/player-predictions")
-def playerPredict():
+@app.route("/api/player-predictions/<fp_id>")
+def playerPredict(fp_id):
+
     results = db.session.query(PlayerPredict.ID, PlayerPredict.fpID, PlayerPredict.yearID, 
                         PlayerPredict.actual_h, 
                         PlayerPredict.model_h,
@@ -390,7 +387,9 @@ def playerPredict():
                         PlayerPredict.model_hr,
                         PlayerPredict.actual_bb, 
                         PlayerPredict.model_bb,                        
-                        PlayerPredict.modelType).all()
+                        PlayerPredict.modelType)\
+                        .filter(PlayerPredict.fpID==fp_id)\
+                        .order_by(PlayerPredict.yearID).all()
 
     p_id = [result[0] for result in results]
     fp_id = [result[1] for result in results]
@@ -420,7 +419,52 @@ def playerPredict():
         "modelType" : modelType
     }]
     return jsonify(predict_data)
-# end playerPredict() route
+# end playerPredict(fp_id) route
+
+# create route that renders player predictions on JSON data
+@app.route("/api/player-predictions-id")
+def playerPredictID():
+
+    results = db.session.query(PlayerPredict.fpID, FranchisePlayers.fpID, FranchisePlayers.playerID)\
+                        .join(FranchisePlayers, PlayerPredict.fpID==FranchisePlayers.fpID)\
+                        .distinct()\
+                        .all()
+
+    fp_id = [result[1] for result in results]
+    player_id = [result[2] for result in results]
+   
+    predict_id = [{
+        "fp_id": fp_id,
+        "player_id": player_id
+    }]
+    return jsonify(predict_id)
+# end playerPredictID() route
+
+# create route that renders player predictions on JSON data
+@app.route("/api/player-predictions-years")
+def playerPredictYRS():
+
+    results = db.session.query(PlayerPredict.yearID).distinct().all()
+    year_id = [result[0] for result in results]
+   
+    predict_years = [{
+        "year_id": year_id,
+    }]
+    return jsonify(predict_years)
+# end playerPredictYRS() route
+
+# create route that renders player predictions on JSON data
+@app.route("/api/player-predictions-models")
+def playerPredictMTS():
+
+    results = db.session.query(PlayerPredict.modelType).distinct().all()
+    model_type = [result[0] for result in results]
+   
+    predict_models = [{
+        "model_type": model_type,
+    }]
+    return jsonify(predict_models)
+# end playerPredictMTS() route
 
 # create route that renders player predictions JSON data
 @app.route("/api/salaries")
